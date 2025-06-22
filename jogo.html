@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Math - Desafio de Matemática</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+    <header class="header">
+        <a href="index.html">Game Math</a>
+    </header>
+
+    <main class="main-content">
+        <section id="operation-selection" class="selection-section">
+            <div class="tittle-content">
+                <h1>Escolha uma Operação</h1>
+            </div>
+
+            <div class="container-operations">
+                <div class="item" data-op="adicao">
+                    <a>+<br/></a>
+                </div>
+                <div class="item" data-op="subtracao">
+                    <a>-<br/></a>
+                </div>
+                <div class="item" data-op="multiplicacao">
+                    <a>x<br/></a>
+                </div>
+                <div class="item" data-op="divisao">
+                    <a>/<br/></a>
+                </div>
+            </div>
+
+            <div class="final-content">
+               
+                <p>Criado pela turma C-jovem 2025 FRL</p>
+            </div>
+        </section>
+
+        <section id="game-area" class="game-section hidden">
+            <div class="game-header">
+                <button id="back-to-menu" class="btn-back">← Voltar</button>
+                <span class="score">Pontos: <span id="current-score">0</span></span>
+            </div>
+
+            <div class="question-display">
+                <span id="num1"></span>
+                <span id="operator-symbol"></span>
+                <span id="num2"></span>
+                <span>=</span>
+                <input type="number" id="user-answer" placeholder="?" autocomplete="off">
+            </div>
+
+            <div class="game-controls">
+                <button id="check-btn" class="btn-action">Verificar</button>
+                <button id="next-btn" class="btn-action hidden">Próxima</button>
+            </div>
+
+            <p id="feedback-message" class="feedback"></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
