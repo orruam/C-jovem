@@ -4,7 +4,320 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Math - Desafio de Matemática</title>
-    <link rel="stylesheet" href="jogo.css">
+   <style>
+       /* Importação de Fonte do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* --- Reset Básico e Estilos Globais --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- Cabeçalho --- */
+.header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.header a {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.header a:hover {
+    color: #3498db;
+}
+
+/* --- Seções do Jogo --- */
+.main-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selection-section, .game-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- Título Principal --- */
+.tittle-content {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.tittle-content h1 {
+    font-size: 2.8em;
+    color: #34495e;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* --- Contêiner de Operações (Menu) --- */
+.container-operations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.item {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent; /* Borda para hover */
+}
+
+.item a {
+    font-size: 3.5em;
+    font-weight: 700;
+    color: #3498db;
+    line-height: 1;
+    text-align: center;
+}
+
+.item:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: #e8f5ff;
+    border-color: #3498db; /* Borda no hover */
+}
+
+/* --- Conteúdo Final (Diretrizes) --- */
+.final-content {
+    background-color: #f7f9fb; /* Cor de fundo mais clara */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); /* Sombra interna */
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.final-content h1 {
+    font-size: 1.8em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.final-content p {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 10px;
+    text-align: justify;
+}
+
+/* --- Área do Jogo (Game Section) --- */
+.game-section {
+    padding: 20px;
+}
+
+.game-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.btn-back {
+    background-color: #f44336; /* Vermelho para voltar */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #d32f2f;
+}
+
+.score {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+#current-score {
+    color: #28a745; /* Verde para a pontuação */
+}
+
+.question-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5em;
+    font-weight: 700;
+    color: #34495e;
+    gap: 20px; /* Espaço entre os números e símbolos */
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Para números em telas pequenas */
+}
+
+#user-answer {
+    width: 150px;
+    padding: 15px;
+    font-size: 1.5em;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#user-answer:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.4);
+}
+
+.game-controls {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.btn-action {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-action:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+#next-btn {
+    background-color: #28a745; /* Verde para o botão "Próxima" */
+}
+
+#next-btn:hover {
+    background-color: #218838;
+}
+
+.feedback {
+    margin-top: 25px;
+    font-size: 1.3em;
+    font-weight: 700;
+    text-align: center;
+    min-height: 1.5em; /* Garante espaço para a mensagem */
+}
+
+.feedback.correct {
+    color: #28a745; /* Verde para acerto */
+}
+
+.feedback.wrong {
+    color: #f44336; /* Vermelho para erro */
+}
+
+/* --- Responsividade --- */
+@media (max-width: 600px) {
+    .header {
+        padding: 10px 20px;
+    }
+    .header a {
+        font-size: 1.5em;
+    }
+    .tittle-content h1 {
+        font-size: 2em;
+    }
+    .container-operations {
+        gap: 15px;
+    }
+    .item {
+        width: 100px;
+        height: 100px;
+    }
+    .item a {
+        font-size: 2.8em;
+    }
+    .final-content {
+        padding: 20px;
+    }
+    .final-content h1 {
+        font-size: 1.5em;
+    }
+    .question-display {
+        font-size: 2.5em;
+        gap: 10px;
+    }
+    #user-answer {
+        width: 120px;
+        padding: 10px;
+        font-size: 1.2em;
+    }
+    .game-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .btn-action {
+        width: 100%; /* Botões de ação ocupam a largura total */
+        padding: 12px 20px;
+    }
+    .feedback {
+        font-size: 1.1em;
+    }
+}
+   </style>
     </head>
 <body>
     <header class="header">
@@ -61,6 +374,161 @@
         </section>
     </main>
 
-    <script src="jogo.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // --- Elementos HTML ---
+    const selectionSection = document.getElementById('operation-selection');
+    const gameArea = document.getElementById('game-area');
+    const operationItems = document.querySelectorAll('.item[data-op]');
+    const backToMenuBtn = document.getElementById('back-to-menu');
+
+    const num1Span = document.getElementById('num1');
+    const operatorSymbolSpan = document.getElementById('operator-symbol');
+    const num2Span = document.getElementById('num2');
+    const userAnswerInput = document.getElementById('user-answer');
+    const checkBtn = document.getElementById('check-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const feedbackMessage = document.getElementById('feedback-message');
+    const scoreSpan = document.getElementById('current-score');
+
+    // --- Variáveis do Jogo ---
+    let currentOperation = ''; // Armazena a operação escolhida (+, -, x, /)
+    let score = 0;
+    let num1, num2, correctAnswer;
+
+    // --- Funções de Controle de Tela ---
+    function showGameArea() {
+        selectionSection.classList.add('hidden');
+        gameArea.classList.remove('hidden');
+        resetGameRound(); // Inicia a primeira rodada
+    }
+
+    function showSelectionArea() {
+        gameArea.classList.add('hidden');
+        selectionSection.classList.remove('hidden');
+        resetScore(); // Reseta a pontuação ao voltar para o menu
+        feedbackMessage.textContent = ''; // Limpa mensagem de feedback
+        userAnswerInput.value = ''; // Limpa o campo de resposta
+        nextBtn.classList.add('hidden'); // Esconde o botão "Próxima"
+        checkBtn.classList.remove('hidden'); // Mostra o botão "Verificar"
+    }
+
+    // --- Funções do Jogo ---
+    function generateNumbers() {
+        if (currentOperation === 'divisao') {
+            // Garante divisão exata
+            num2 = Math.floor(Math.random() * 9) + 2; // de 2 a 10
+            num1 = num2 * (Math.floor(Math.random() * 9) + 2); // num1 é múltiplo de num2
+        } else {
+            num1 = Math.floor(Math.random() * 100) + 1; // de 1 a 100
+            num2 = Math.floor(Math.random() * 100) + 1; // de 1 a 100
+            // Ajuste para subtração para evitar números negativos fáceis
+            if (currentOperation === 'subtracao' && num1 < num2) {
+                [num1, num2] = [num2, num1]; // Troca os números para num1 ser maior
+            }
+        }
+    }
+
+    function calculateCorrectAnswer() {
+        switch (currentOperation) {
+            case 'adicao':
+                correctAnswer = num1 + num2;
+                operatorSymbolSpan.textContent = '+';
+                break;
+            case 'subtracao':
+                correctAnswer = num1 - num2;
+                operatorSymbolSpan.textContent = '-';
+                break;
+            case 'multiplicacao':
+                correctAnswer = num1 * num2;
+                operatorSymbolSpan.textContent = 'x';
+                break;
+            case 'divisao':
+                correctAnswer = num1 / num2;
+                operatorSymbolSpan.textContent = '/';
+                break;
+        }
+    }
+
+    function displayQuestion() {
+        num1Span.textContent = num1;
+        num2Span.textContent = num2;
+        userAnswerInput.value = ''; // Limpa o campo de resposta
+        userAnswerInput.focus(); // Coloca o cursor no campo de resposta
+        feedbackMessage.textContent = ''; // Limpa a mensagem de feedback
+        checkBtn.classList.remove('hidden'); // Mostra o botão verificar
+        nextBtn.classList.add('hidden'); // Esconde o botão próxima
+        userAnswerInput.disabled = false; // Habilita o input
+    }
+
+    function checkAnswer() {
+        const userAnswer = Number(userAnswerInput.value);
+
+        if (userAnswerInput.value.trim() === '') {
+            feedbackMessage.textContent = 'Por favor, digite sua resposta.';
+            feedbackMessage.classList.add('wrong');
+            return;
+        }
+
+        userAnswerInput.disabled = true; // Desabilita o input após verificar
+
+        if (userAnswer === correctAnswer) {
+            feedbackMessage.textContent = 'ACERTOU! 🎉';
+            feedbackMessage.className = 'feedback correct'; // Adiciona classe de acerto
+            score++;
+        } else {
+            feedbackMessage.textContent = `ERROU! A resposta correta era ${correctAnswer}. 😔`;
+            feedbackMessage.className = 'feedback wrong'; // Adiciona classe de erro
+        }
+        scoreSpan.textContent = score;
+        checkBtn.classList.add('hidden'); // Esconde o verificar
+        nextBtn.classList.remove('hidden'); // Mostra o próxima
+    }
+
+    function resetGameRound() {
+        generateNumbers();
+        calculateCorrectAnswer();
+        displayQuestion();
+    }
+
+    function resetScore() {
+        score = 0;
+        scoreSpan.textContent = score;
+    }
+
+    // --- Event Listeners ---
+
+    // Eventos para selecionar a operação
+    operationItems.forEach(item => {
+        item.addEventListener('click', function() {
+            currentOperation = this.dataset.op; // Pega o valor do atributo data-op
+            showGameArea();
+        });
+    });
+
+    // Botão Voltar ao Menu
+    backToMenuBtn.addEventListener('click', showSelectionArea);
+
+    // Botão Verificar
+    checkBtn.addEventListener('click', checkAnswer);
+
+    // Botão Próxima
+    nextBtn.addEventListener('click', resetGameRound);
+
+    // Pressionar Enter para verificar (e ir para a próxima)
+    userAnswerInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            if (!checkBtn.classList.contains('hidden')) { // Se o botão verificar estiver visível
+                checkAnswer();
+            } else { // Se o botão próxima estiver visível
+                resetGameRound();
+            }
+        }
+    });
+
+    // Inicia o jogo no modo de seleção de operação
+    showSelectionArea();
+});
+    </script>
 </body>
 </html>
